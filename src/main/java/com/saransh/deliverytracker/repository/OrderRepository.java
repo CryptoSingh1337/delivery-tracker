@@ -2,7 +2,9 @@ package com.saransh.deliverytracker.repository;
 
 import com.saransh.deliverytracker.domain.Order;
 import com.saransh.deliverytracker.domain.OrderStatus;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,4 +14,8 @@ import java.util.List;
 public interface OrderRepository extends CrudRepository<Order, Integer> {
 
     List<Order> findAllByOrderStatusEquals(OrderStatus orderStatus);
+
+    @Query(value = "select o.id, sqrt(power((o.start_longitude - r.longitude), 2) + power((o.start_latitude - r.latitude), 2)) as distance from Rider r, Orders o where o.order_status = 'PENDING' and r.id = :riderId group by o.id having distance <= :radius order by distance asc limit 0,1",
+            nativeQuery = true)
+    OrderIdAndDistance getNearByOrder(@Param("riderId") Integer riderId, @Param("radius") Double radius);
 }

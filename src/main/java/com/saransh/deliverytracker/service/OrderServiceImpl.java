@@ -2,9 +2,8 @@ package com.saransh.deliverytracker.service;
 
 import com.saransh.deliverytracker.domain.Order;
 import com.saransh.deliverytracker.domain.OrderStatus;
-import com.saransh.deliverytracker.domain.Rider;
+import com.saransh.deliverytracker.exceptions.ResourceNotFoundException;
 import com.saransh.deliverytracker.repository.OrderRepository;
-import com.saransh.deliverytracker.repository.RiderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -44,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getOrderById(Integer id) {
         return orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
     }
 
     @Override

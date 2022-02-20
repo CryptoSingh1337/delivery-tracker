@@ -4,7 +4,7 @@ import com.saransh.deliverytracker.domain.Order;
 import com.saransh.deliverytracker.domain.Point;
 import com.saransh.deliverytracker.domain.Rider;
 import com.saransh.deliverytracker.domain.RiderStatus;
-import com.saransh.deliverytracker.repository.OrderRepository;
+import com.saransh.deliverytracker.exceptions.ResourceNotFoundException;
 import com.saransh.deliverytracker.repository.RiderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class RiderServiceImpl implements RiderService {
     @Override
     public Rider getRiderById(Integer id) {
         return riderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rider not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Rider not found"));
     }
 
     @Override

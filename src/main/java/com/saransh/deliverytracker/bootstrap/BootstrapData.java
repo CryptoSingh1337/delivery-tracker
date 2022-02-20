@@ -33,8 +33,8 @@ public class BootstrapData implements CommandLineRunner {
         return List.of(
                 Rider.builder()
                         .location(Point.builder()
-                                .longitude(6.0)
-                                .latitude(33.5)
+                                .longitude(5.6)
+                                .latitude(35.3)
                                 .build())
                         .riderStatus(RiderStatus.FREE)
                         .build(),
@@ -42,6 +42,20 @@ public class BootstrapData implements CommandLineRunner {
                         .location(Point.builder()
                                 .longitude(36.3)
                                 .latitude(36.0)
+                                .build())
+                        .riderStatus(RiderStatus.FREE)
+                        .build(),
+                Rider.builder()
+                        .location(Point.builder()
+                                .longitude(17.8)
+                                .latitude(6.0)
+                                .build())
+                        .riderStatus(RiderStatus.FREE)
+                        .build(),
+                Rider.builder()
+                        .location(Point.builder()
+                                .longitude(22.5)
+                                .latitude(11.7)
                                 .build())
                         .riderStatus(RiderStatus.FREE)
                         .build()

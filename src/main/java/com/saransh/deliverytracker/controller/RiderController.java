@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -37,7 +36,7 @@ public class RiderController {
         return ResponseEntity.status(201).body(riderService.saveRider(rider));
     }
 
-    @PutMapping(value = "/update/location/{riderId}",
+    @PutMapping(value = "/{riderId}/update/location",
             consumes = {"application/json"},
             produces = {"application/json"})
     public ResponseEntity<Rider> updateRiderLocation(
@@ -54,7 +53,7 @@ public class RiderController {
         return ResponseEntity.ok(riderService.updateOrder(riderId, orderId));
     }
 
-    @PutMapping(value = "/update/status/{riderId}",
+    @PutMapping(value = "/{riderId}/update/status",
             produces = {"application/json"})
     public ResponseEntity<Rider> updateRiderStatus(
             @PathVariable Integer riderId) {
