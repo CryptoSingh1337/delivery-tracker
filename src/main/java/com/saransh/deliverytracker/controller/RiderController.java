@@ -1,5 +1,6 @@
 package com.saransh.deliverytracker.controller;
 
+import com.saransh.deliverytracker.ResponseModel.AcknowledgementResponseModel;
 import com.saransh.deliverytracker.domain.Point;
 import com.saransh.deliverytracker.domain.Rider;
 import com.saransh.deliverytracker.domain.RiderStatus;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * author: CryptoSingh1337
@@ -47,10 +49,17 @@ public class RiderController {
 
     @PutMapping(value = "/{riderId}/update/order/{orderId}",
             produces = {"application/json"})
-    public ResponseEntity<Rider> updateOrder(
+    public ResponseEntity<?> updateOrder(
             @PathVariable Integer riderId,
             @PathVariable Integer orderId) {
-        return ResponseEntity.ok(riderService.updateOrder(riderId, orderId));
+        Rider rider = riderService.updateOrder(riderId, orderId);
+        if (rider.getOrder() != null && rider.getOrder().getId().equals(orderId)) {
+            return ResponseEntity.ok(rider);
+        }
+        return ResponseEntity.ok(AcknowledgementResponseModel.builder()
+                .status(200)
+                .message("Unable to assign the this rider to given order")
+                .build());
     }
 
     @PutMapping(value = "/{riderId}/update/status",
@@ -58,5 +67,20 @@ public class RiderController {
     public ResponseEntity<Rider> updateRiderStatus(
             @PathVariable Integer riderId) {
         return ResponseEntity.ok(riderService.updateRiderStatus(riderId));
+    }
+
+    @GetMapping(value = "/{riderId}/get/order", produces = {"application/json"})
+    public ResponseEntity<?> getOrderForRider(@PathVariable Integer riderId) {
+        Rider savedRider = riderService.getOrderForRider(riderId);
+        if (savedRider.getOrder() == null) {
+            return ResponseEntity.ok(
+                    Map.of("acknowledgement", AcknowledgementResponseModel.builder()
+                                    .status(200)
+                                    .message("No Order found for this rider")
+                                    .build(),
+                            "order", savedRider)
+            );
+        }
+        return ResponseEntity.ok(Map.of("rider", savedRider));
     }
 }

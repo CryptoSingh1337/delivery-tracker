@@ -15,7 +15,7 @@ public interface RiderRepository extends CrudRepository<Rider, Integer> {
 
     List<Rider> findAllByRiderStatusEquals(RiderStatus riderStatus);
 
-    @Query(value = "select r.id, sqrt(power((o.start_longitude - r.longitude), 2) + power((o.start_latitude - r.latitude), 2)) as distance from Rider r, Orders o where r.rider_status = 'FREE' and o.id = :orderId group by r.id having distance <= :radius order by distance asc limit 0,1",
+    @Query(value = "select r.id, min(sqrt(power((o.start_longitude - r.longitude), 2) + power((o.start_latitude - r.latitude), 2))) as distance from Rider r, Orders o where r.rider_status = 'FREE' and o.order_status = 'PENDING' and o.id = :orderId group by r.id having distance <= :radius limit 0,1",
             nativeQuery = true)
     RiderIdAndDistance getNearByRider(@Param("orderId") Integer orderId, @Param("radius") Double radius);
 }

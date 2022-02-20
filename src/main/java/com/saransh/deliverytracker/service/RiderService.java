@@ -18,4 +18,6 @@ public interface RiderService {
     Rider updateRiderLocation(Integer riderId, Point location);
     Rider updateRiderStatus(Integer riderId);
     Rider updateOrder(Integer riderId, Integer orderId);
+    Rider getOrderForRider(Rider rider);
+    Rider getOrderForRider(Integer riderId);
 }

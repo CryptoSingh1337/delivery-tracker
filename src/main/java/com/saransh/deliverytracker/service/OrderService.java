@@ -15,4 +15,6 @@ public interface OrderService {
     Order getOrderById(Integer id);
     Order saveOrder(Order order);
     Order updateOrderStatus(Integer orderId);
+    Order getRiderForOrder(Order order);
+    Order getRiderForOrder(Integer orderId);
 }

@@ -25,5 +25,11 @@ public class Rider {
 
     @Embedded private Point location;
     @Enumerated(EnumType.STRING) private RiderStatus riderStatus;
-    @JsonManagedReference @OneToOne private Order order;
+    @JsonManagedReference @OneToOne(cascade = CascadeType.ALL) private Order order;
+
+    public void addOrder(Order order) {
+        this.riderStatus = RiderStatus.ON_THE_WAY;
+        this.order = order;
+        order.setRider(this);
+    }
 }
