@@ -34,8 +34,18 @@ public class RiderController {
 
     @PostMapping(consumes = {"application/json"},
             produces = {"application/json"})
-    public ResponseEntity<Rider> saveRider(@RequestBody Rider rider) {
-        return ResponseEntity.status(201).body(riderService.saveRider(rider));
+    public ResponseEntity<?> saveRider(@RequestBody Rider rider) {
+        Rider savedRider = riderService.saveRider(rider);
+        if (savedRider.getOrder() == null) {
+            return ResponseEntity.status(201).body(
+                    Map.of("acknowledgement", AcknowledgementResponseModel.builder()
+                            .status(201)
+                            .message("Rider has been created but no order is found nearby")
+                            .build(),
+                            "rider", savedRider)
+            );
+        }
+        return ResponseEntity.status(201).body(savedRider);
     }
 
     @PutMapping(value = "/{riderId}/update/location",

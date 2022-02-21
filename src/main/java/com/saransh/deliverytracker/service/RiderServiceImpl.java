@@ -47,8 +47,8 @@ public class RiderServiceImpl implements RiderService {
     @Override
     @Transactional
     public Rider saveRider(Rider rider) {
-        rider.setRiderStatus(RiderStatus.FREE);
-        return riderRepository.save(rider);
+        Rider savedRider = riderRepository.save(rider);
+        return getOrderForRider(savedRider);
     }
 
     @Override
@@ -92,6 +92,7 @@ public class RiderServiceImpl implements RiderService {
     }
 
     @Override
+    @Transactional
     public Rider getOrderForRider(Rider rider) {
         OrderIdAndDistance suggestedOrder = suggestionService.getNearByOrder(rider.getId());
         if (suggestedOrder != null && suggestedOrder.getId() != null) {
