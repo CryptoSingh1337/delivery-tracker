@@ -79,7 +79,7 @@ public class RiderController {
         return ResponseEntity.ok(riderService.updateRiderStatus(riderId));
     }
 
-    @GetMapping(value = "/{riderId}/get/order", produces = {"application/json"})
+    @PutMapping(value = "/{riderId}/get/order", produces = {"application/json"})
     public ResponseEntity<?> getOrderForRider(@PathVariable Integer riderId) {
         Rider savedRider = riderService.getOrderForRider(riderId);
         if (savedRider.getOrder() == null) {

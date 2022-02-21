@@ -47,8 +47,18 @@ public class OrderController {
     }
 
     @GetMapping(value = "/{orderId}/update/status", produces = {"application/json"})
-    public ResponseEntity<Order> updateOrderStatus(@PathVariable Integer orderId) {
-        return ResponseEntity.ok(orderService.updateOrderStatus(orderId));
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Integer orderId) {
+        Order savedOrder = orderService.updateOrderStatus(orderId);
+        if (OrderStatus.DELIVERED != savedOrder.getOrderStatus()) {
+            return ResponseEntity.ok(
+                    Map.of("acknowledgement", AcknowledgementResponseModel.builder()
+                            .status(200)
+                            .message("Status of this order is not updated")
+                            .build(),
+                            "order", savedOrder)
+            );
+        }
+        return ResponseEntity.ok(savedOrder);
     }
 
     @GetMapping(value = "/{orderId}/get/rider", produces = {"application/json"})

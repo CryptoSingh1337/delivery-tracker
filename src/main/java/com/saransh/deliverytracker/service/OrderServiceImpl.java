@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order updateOrderStatus(Integer orderId) {
         Order order = getOrderById(orderId);
-        if (order != null) {
+        if (order != null && order.getRider() != null) {
             riderService.updateRiderStatus(order.getRider().getId());
             order.setRider(null);
             order.setOrderStatus(OrderStatus.DELIVERED);
