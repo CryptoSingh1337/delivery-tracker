@@ -29,6 +29,6 @@
 -- (38.0, 32.4, 43.2, 13.0, 'PENDING'),
 -- (5.3, 38.7, 13.6, 5.5, 'PENDING');
 
-select r.id, min(sqrt(power((o.start_longitude - r.longitude), 2) + power((o.start_latitude - r.latitude), 2))) as distance from Rider r, Orders o where r.rider_status = 'FREE' and o.id = 1 group by r.id having distance <= 5.0 order by distance asc limit 0,1;
+select r.id, min(sqrt(power((o.start_longitude - r.longitude), 2) + power((o.start_latitude - r.latitude), 2))) as distance from Rider r, Orders o where r.rider_status = 'FREE' and o.order_status = 'PENDING' and o.id = :orderId group by r.id having distance <= :radius limit 0,1;
 
-select o.id, sqrt(power((o.start_longitude - r.longitude), 2) + power((o.start_latitude - r.latitude), 2)) as distance from Rider r, Orders o where o.order_status = 'PENDING' and r.id = 4 group by o.id having distance <= 5.0 order by distance asc limit 0,1;
+select o.id, min(sqrt(power((o.start_longitude - r.longitude), 2) + power((o.start_latitude - r.latitude), 2))) as distance from Rider r, Orders o where o.order_status = 'PENDING' and o.rider_id is null and r.id = :riderId group by o.id having distance <= :radius limit 0,1;
