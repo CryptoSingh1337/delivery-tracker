@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 
 /**
@@ -42,7 +41,7 @@ public class Order {
     private OrderStatus orderStatus;
     @JsonBackReference @OneToOne(cascade = CascadeType.ALL) private Rider rider;
 
-    @PostConstruct
+    @PrePersist
     public void initializeOrderStatus() {
         this.orderStatus = OrderStatus.PENDING;
     }

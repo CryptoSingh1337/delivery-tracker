@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 
 /**
@@ -28,7 +27,7 @@ public class Rider {
     @Enumerated(EnumType.STRING) private RiderStatus riderStatus;
     @JsonManagedReference @OneToOne(cascade = CascadeType.ALL) private Order order;
 
-    @PostConstruct
+    @PrePersist
     public void initializeRiderStatus() {
         this.riderStatus = RiderStatus.FREE;
     }
